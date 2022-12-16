@@ -7,6 +7,7 @@ locals {
       }
     ]
   ]) : [] 
+  module_namespace = "alex067/terraform-spacelift-stacks"
 }
 
 data "local_file" "trigger_policy" {
@@ -18,13 +19,13 @@ data "local_file" "git_push_policy" {
 }
 
 resource "spacelift_policy" "push" {
-  name = "General Git Push Policy"
+  name = "${local.module_namespace} Git Push Policy"
   body = data.local_file.git_push_policy.content
   type = "GIT_PUSH"
 }
 
 resource "spacelift_policy" "trigger" {
-  name = "General Trigger Policy"
+  name = "${local.module_namespace} Trigger Policy"
   body = data.local_file.trigger_policy.content
   type = "TRIGGER"
 }

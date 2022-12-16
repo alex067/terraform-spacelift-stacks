@@ -1,6 +1,7 @@
 # Spacelift Stacks Teraform Module
 
-Terraform module which helps streamline and manage the creation of Spacelift Stacks. 
+Terraform module which helps streamline and manage the creation of Spacelift Stacks.  
+** This module currently supports AWS Integrations with Spacelift **
 
 ![](assets/banner.png)
 
@@ -42,10 +43,10 @@ Spacelift is an amazing platform, allowing your Terraform code to endlessly scal
 This module aims to streamline the core process of creating and managing your Spacelift stacks. 
 
 The design of the module revolves around the following workflow process and assumptions:
-* Your Stacks are managed by a top level Administrative Stack.
-* You are following a trunk based model.
-* Your Stack will execute ```terraform plan``` when a Pull Request is created.
-* Your Stack will execute ```terraform apply --auto-approve``` when a Pull Request is approved and merged to the trunk branch.
+* Your Stacks are managed by a top level Administrative Stack
+* You are following a trunk based model
+* Your Stack will execute ```terraform plan``` when a Pull Request is created
+* Your Stack will execute ```terraform apply --auto-approve``` when a Pull Request is approved and merged to the trunk branch
 
 The logic to enable this workflow is found in the ```git_push.rego``` policy.
 
@@ -83,3 +84,27 @@ variable "additional_policies" {
 ```
 
 A list of policy ids which will be assumed by all Stacks. Common to provide global read permissions to all Stacks within your org.
+
+```hcl
+variable "aws_integration_id" {
+  type = string 
+  description = "The Spacelift AWS Integration Id attached to all Stacks"
+}
+```
+
+The AWS Integration Id created in Spacelift, assumed by all Stacks.
+
+```hcl
+variable "global_project_root" {
+  type        = string
+  default     = ""
+  description = <<EOH
+  The top level directory containing Terraform infrastructure code. Defaults to root level directory of the repository. 
+  If set, all Stack dependencices and the Stack project root directory are prepended with the global_project_root value.
+EOH
+}
+```
+
+A common organizational pattern, is to group resources by an environment such as Development, Staging, Production, and so on. In this case, infrastructure paths are prefixed by the environment folder, such as ```dev/*```
+
+The ```global_project_root``` provides a standard prefix to be added to the project path, for all all Spacelift Stacks.

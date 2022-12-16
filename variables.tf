@@ -50,3 +50,9 @@ variable "trunk_branch" {
   default     = "main"
   description = "The Github repository trunk branch to detect for any changes"
 }
+
+### Cloud Integrations
+variable "aws_integration_id" {
+  type = string 
+  description = "The Spacelift AWS Integration Id attached to all Stacks"
+}

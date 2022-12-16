@@ -24,3 +24,16 @@ resource "spacelift_stack" "main" {
   repository            = var.git_repository
   terraform_version     = var.terraform_version
 }
+
+resource "spacelift_aws_integration_attachment" "main" {
+  for_each = { for stack in var.stacks : stack.name => stack }
+
+  integration_id = var.aws_integration_id
+  stack_id       = spacelift_stack.main[each.value.name].id
+  read           = true
+  write          = true
+
+  depends_on = [
+    spacelift_stack.main
+  ]
+}

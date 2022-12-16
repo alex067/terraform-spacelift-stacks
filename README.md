@@ -10,7 +10,8 @@ Terraform module which helps streamline and manage the creation of Spacelift Sta
 ```hcl
 module "stacks" {
   source  = "alex067/stacks/spacelift"
-
+  
+  aws_integration_id             = "12345"
   additional_policies            = ["all-of-engineering-gets-read-access"]
   git_repository                 = "infrastructure"
   terraform_version              = "1.2.4"
@@ -25,10 +26,6 @@ module "stacks" {
     description  = "Spacelift Stack Module Example"
     project_root = "dev/fizz/buzz"
     dependencies = ["modules/network"]
-    }, {
-    name         = "Test Stack C"
-    project_root = "dev/hello/world"
-    dependencies = ["modules/network", "modules/compute"]
   }]
 
 }
